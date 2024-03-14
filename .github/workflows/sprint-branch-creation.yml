@@ -10,13 +10,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout Branch
+        uses: actions/checkout@v4.1.1
+
       - name: Get Next Sprint Branch
         id:   get_next_sprint_branch
         uses: azure/powershell@v1.4.0
         with:
           failOnStandardError: true
           azPSVersion:         "latest"
-          inlineScript:        ./sc.ps1
+          inlineScript:        ./Get-NextSprintBranch.ps1
 
       - name:  Create New Branch Based on Origin/Main
         shell: bash
