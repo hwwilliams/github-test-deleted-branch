@@ -1,0 +1,27 @@
+name: Create Branch on Merge
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  create-branch-on-merge:
+    name: Create Branch on Merge
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get Next Sprint Branch
+        id:   get_next_sprint_branch
+        uses: azure/powershell@v1.4.0
+        with:
+          failOnStandardError: true
+          azPSVersion:         "latest"
+          inlineScript:        ./sc.ps1
+
+      - name:  Create New Branch Based on Origin/Main
+        shell: bash
+        run: |
+          next_sprint_branch_name="${{ steps.get_next_sprint_branch.outputs.SPRINT_BRANCH_NAME }}"
+          echo "Creating new branch '${next_sprint_branch_name}' based on origin/main"
+          git checkout -b "${next_sprint_branch_name}" origin/main
+          git push origin "${next_sprint_branch_name}"
