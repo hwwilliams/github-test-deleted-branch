@@ -20,6 +20,8 @@ jobs:
           failOnStandardError: true
           azPSVersion:         "latest"
           inlineScript:        ./Get-NextSprintBranch.ps1
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
 
       - name:  Create New Branch Based on Origin/Main
         shell: bash
