@@ -30,3 +30,5 @@ jobs:
           echo "Creating new branch '${next_sprint_branch_name}' based on origin/main"
           git checkout -b "${next_sprint_branch_name}" origin/main
           git push origin "${next_sprint_branch_name}"
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
