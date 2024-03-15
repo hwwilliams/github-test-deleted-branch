@@ -1,7 +1,6 @@
 name: Create Branch on Merge
 
 on:
-  pull_request:
   push:
 
 jobs:
@@ -27,6 +26,8 @@ jobs:
         shell: bash
         run: |
           next_sprint_branch_name='${{ steps.get_next_sprint_branch.outputs.SPRINT_BRANCH_NAME }}'
+
+          git branch -r
 
           if [[ $(git branch -r) =~ $next_sprint_branch_name ]]; then
             echo "Checking out existing sprint branch '$next_sprint_branch_name'"
