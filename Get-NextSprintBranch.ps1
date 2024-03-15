@@ -1,3 +1,6 @@
+# All errors are terminating errors
+$ErrorActionPreference = [System.Management.Automation.ActionPreference]::Stop
+
 [Regex] $SprintBranchNameRegex = "^((AERIS|CDE)_Sprint_)([0-9])+$"
 $PullRequestJsonProperties = "baseRefName,headRefName,mergedAt,number,state,title,url"
 
