@@ -36,7 +36,7 @@ jobs:
               echo "Existing sprint branch '$next_sprint_branch_name' is not up to date with origin/main"
 
               echo "Attempting to merge origin/main into existing sprint branch '$next_sprint_branch_name'"
-              git merge origin/main
+              git merge --allow-unrelated-histories origin/main
 
               echo "Pushing sprint branch '$next_sprint_branch_name' to origin"
               git push origin $next_sprint_branch_name
