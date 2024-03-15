@@ -48,3 +48,4 @@ jobs:
             echo "Pushing sprint branch '$next_sprint_branch_name' to origin"
             git push origin $next_sprint_branch_name
           fi
+#
