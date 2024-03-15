@@ -27,6 +27,7 @@ jobs:
         run: |
           next_sprint_branch_name='${{ steps.get_next_sprint_branch.outputs.SPRINT_BRANCH_NAME }}'
 
+          git fetch -all
           git branch -r
 
           if [[ $(git branch -r) =~ $next_sprint_branch_name ]]; then
