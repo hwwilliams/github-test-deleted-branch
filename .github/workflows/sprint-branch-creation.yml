@@ -14,24 +14,38 @@ jobs:
         uses: actions/checkout@v4.1.1
 
       - name: Get Next Sprint Branch
-        id:   get_next_sprint_branch
+        id: get_next_sprint_branch
         uses: azure/powershell@v1.4.0
         with:
           failOnStandardError: true
-          azPSVersion:         "latest"
-          inlineScript:        ./Get-NextSprintBranch.ps1
+          azPSVersion: "latest"
+          inlineScript: ./scripts/Get-NextSprintBranch.ps1
         env:
           GH_TOKEN: ${{ github.token }}
-
-      # - name: Run the scripts
-      #   run: |
-      #     ./my-script.sh
-      #     ./my-other-script.sh
 
       - name:  Create New Branch Based on Origin/Main
         shell: bash
         run: |
-          next_sprint_branch_name="${{ steps.get_next_sprint_branch.outputs.SPRINT_BRANCH_NAME }}"
-          echo "Creating new branch '${next_sprint_branch_name}' based on origin/main"
-          git checkout -b "${next_sprint_branch_name}" origin/main
-          git push origin "${next_sprint_branch_name}"
+          next_sprint_branch_name='${{ steps.get_next_sprint_branch.outputs.SPRINT_BRANCH_NAME }}'
+
+          if [[ $(git branch -r) =~ $next_sprint_branch_name ]]; then
+            echo "Checking out existing sprint branch '$next_sprint_branch_name'"
+            git checkout $next_sprint_branch_name
+
+            if ! git merge-base --is-ancestor origin/main $next_sprint_branch_name; then
+              echo "Existing sprint branch '$next_sprint_branch_name' is not up to date with origin/main"
+
+              echo "Attempting to merge origin/main into existing sprint branch '$next_sprint_branch_name'"
+              git pull origin/main
+
+              echo "Pushing sprint branch '$next_sprint_branch_name' to origin"
+              git push origin $next_sprint_branch_name
+            fi
+          else
+            echo "Creating new sprint branch '$next_sprint_branch_name' based on origin/main"
+            git checkout -b $next_sprint_branch_name origin/main
+
+            echo "Pushing sprint branch '$next_sprint_branch_name' to origin"
+            git push origin $next_sprint_branch_name
+          fi
+
