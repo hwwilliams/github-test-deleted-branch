@@ -20,8 +20,8 @@ jobs:
           failOnStandardError: true
           azPSVersion:         "latest"
           inlineScript:        ./Get-NextSprintBranch.ps1
-        # env:
-        #   GH_TOKEN: ${{ secrets.GH_PAT }}
+        env:
+          GH_TOKEN: ${{ github.token }}
 
       # - name: Run the scripts
       #   run: |
