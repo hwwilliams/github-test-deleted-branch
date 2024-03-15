@@ -28,7 +28,7 @@ jobs:
         run: |
           next_sprint_branch_name='${{ steps.get_next_sprint_branch.outputs.SPRINT_BRANCH_NAME }}'
 
-          if [[ $(git fetch --all && git branch -r) =~ $next_sprint_branch_name ]]; then
+          if [[ $(git fetch origin && git branch -r) =~ $next_sprint_branch_name ]]; then
             echo "Checking out existing sprint branch '$next_sprint_branch_name'"
             git checkout $next_sprint_branch_name
 
@@ -36,7 +36,7 @@ jobs:
               echo "Existing sprint branch '$next_sprint_branch_name' is not up to date with origin/main"
 
               echo "Attempting to merge origin/main into existing sprint branch '$next_sprint_branch_name'"
-              git pull origin/main
+              git merge origin/main
 
               echo "Pushing sprint branch '$next_sprint_branch_name' to origin"
               git push origin $next_sprint_branch_name
