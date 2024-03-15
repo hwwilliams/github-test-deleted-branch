@@ -12,6 +12,14 @@ jobs:
     steps:
       - name: Checkout Branch
         uses: actions/checkout@v4.1.1
+        with:
+          fetch-depth: 0 # 0 depth required for successful auto PR merge process to avoid unrelated history error
+          token: ${{ github.token }}
+
+      - name: Configure Git User
+        run:  |
+          git config user.email "${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>"
+          git config user.name "${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>"
 
       - name: Get Next Sprint Branch
         id: get_next_sprint_branch
@@ -20,8 +28,6 @@ jobs:
           failOnStandardError: true
           azPSVersion: "latest"
           inlineScript: ./scripts/Get-NextSprintBranch.ps1
-        env:
-          GH_TOKEN: ${{ github.token }}
 
       - name:  Setup Next Sprint Branch
         shell: bash
@@ -36,7 +42,7 @@ jobs:
               echo "Existing sprint branch '$next_sprint_branch_name' is not up to date with origin/main"
 
               echo "Attempting to merge origin/main into existing sprint branch '$next_sprint_branch_name'"
-              git merge --allow-unrelated-histories origin/main
+              git merge origin/main
 
               echo "Pushing sprint branch '$next_sprint_branch_name' to origin"
               git push origin $next_sprint_branch_name
@@ -48,5 +54,3 @@ jobs:
             echo "Pushing sprint branch '$next_sprint_branch_name' to origin"
             git push origin $next_sprint_branch_name
           fi
-        env:
-          GH_TOKEN: ${{ github.token }}
