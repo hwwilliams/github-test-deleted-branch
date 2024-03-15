@@ -1,8 +1,8 @@
 name: Create Branch on Merge
 
 on:
+  pull_request:
   push:
-    branches: [main]
 
 jobs:
   create-branch-on-merge:
@@ -23,7 +23,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
 
-      - name:  Create New Branch Based on Origin/Main
+      - name:  Setup Next Sprint Branch
         shell: bash
         run: |
           next_sprint_branch_name='${{ steps.get_next_sprint_branch.outputs.SPRINT_BRANCH_NAME }}'
