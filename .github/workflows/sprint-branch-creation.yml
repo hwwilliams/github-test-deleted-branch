@@ -1,7 +1,5 @@
 name: Create Branch on Merge
 
-#
-
 on:
   push:
     branches: [main]
