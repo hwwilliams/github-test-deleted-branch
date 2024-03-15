@@ -2,6 +2,7 @@ name: Create Branch on Merge
 
 on:
   push:
+    branches: [main]
 
 jobs:
   create-branch-on-merge:
@@ -27,10 +28,7 @@ jobs:
         run: |
           next_sprint_branch_name='${{ steps.get_next_sprint_branch.outputs.SPRINT_BRANCH_NAME }}'
 
-          git fetch --all
-          git branch -r
-
-          if [[ $(git branch -r) =~ $next_sprint_branch_name ]]; then
+          if [[ $(git fetch --all && git branch -r) =~ $next_sprint_branch_name ]]; then
             echo "Checking out existing sprint branch '$next_sprint_branch_name'"
             git checkout $next_sprint_branch_name
 
@@ -50,4 +48,3 @@ jobs:
             echo "Pushing sprint branch '$next_sprint_branch_name' to origin"
             git push origin $next_sprint_branch_name
           fi
-
