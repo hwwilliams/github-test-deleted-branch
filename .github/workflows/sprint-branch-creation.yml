@@ -2,7 +2,7 @@ name: Create Branch on Merge
 
 on:
   push:
-    branches: []
+    branches: [main]
 
 jobs:
   create-branch-on-merge:
