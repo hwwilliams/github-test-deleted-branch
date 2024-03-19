@@ -31,6 +31,10 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
 
+      - name: Fix Non-Executable Bash Scripts
+        shell: bash
+        run: find ./scripts/ -type f -iname '*.sh' -not -executable -exec chmod +x {} \;
+
       - name:  Setup Next Sprint Branch
         shell: bash
         run: ./scripts/Set-NextSprintBranch.sh
