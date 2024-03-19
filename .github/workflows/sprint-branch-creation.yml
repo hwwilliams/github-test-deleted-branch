@@ -40,3 +40,4 @@ jobs:
         run: ./scripts/Set-NextSprintBranch.sh
         env:
           GH_TOKEN: ${{ github.token }}
+          NEXT_SPRINT_BRANCH_NAME: ${{ steps.get_next_sprint_branch.outputs.SPRINT_BRANCH_NAME }}
